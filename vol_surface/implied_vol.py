@@ -16,7 +16,7 @@ def implied_vol_newton(market_price, s, k, r, t, option_type="call",
 
     for _ in range(max_iterations):
         price = call_and_put_pricing(s, k, r, t, sigma)[idx]
-        vega_val = vega(s, k, r, t, sigma)[0]
+        vega_val = vega(s, k, r, t, sigma, 0.01)[0]
 
         if abs(vega_val) < 1e-10:
             return sigma, False
