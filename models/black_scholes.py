@@ -8,8 +8,10 @@ def compute_d1_d2(s, k, r, t, sigma):
     return d1, d2
 
 def call_and_put_pricing(s, k, r, t , sigma):
-    if t == 0:
-        return None
+    if t <= 1/365:
+        call = max(s - k, 0)
+        put = max(k - s, 0)
+        return call, put
 
     d1, d2 = compute_d1_d2(s, k, r, t, sigma)
 

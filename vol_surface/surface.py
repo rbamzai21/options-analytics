@@ -17,7 +17,11 @@ def build_surface(ticker: str) -> pd.DataFrame:
     ticker_obj = yf.Ticker(ticker)
     expiries = ticker_obj.options
 
-    s = get_spot_price(ticker)
+    try:
+        s = get_spot_price(ticker)
+    except ValueError as e:
+        raise ValueError(str(e))
+
     r = get_risk_free_rate()
     rows = []
 
@@ -60,7 +64,7 @@ def build_surface(ticker: str) -> pd.DataFrame:
                 })
     return pd.DataFrame(rows)
 
-def plot_surface(df: pd.DataFrame) -> None:
+def plot_surface(df: pd.DataFrame):
     # Plots the vol surface as a 3D surface plot
     # x-axis: strike, y-axis: time to expiry, z-axis: implied vol
     
@@ -84,5 +88,5 @@ def plot_surface(df: pd.DataFrame) -> None:
             zaxis_title="Implied Volatility"
         )
     )
-    fig.show(renderer="browser")
+    return fig
 

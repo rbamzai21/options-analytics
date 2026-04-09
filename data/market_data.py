@@ -18,7 +18,12 @@ def clean_chain(df: pd.DataFrame) -> pd.DataFrame:
 def get_spot_price(ticker: str) -> float:
     # Returns current stock price for a given ticker
     stock = yf.Ticker(ticker)
-    return stock.info["regularMarketPrice"]
+    
+    price = stock.info.get("regularMarketPrice") or stock.info.get("previousClose")
+    
+    if price is None:
+        raise ValueError(f"Could not find price for ticker '{ticker}'. It may be invalid.")
+    return price
 
 def get_options_chain(ticker: str, expiry: str) -> tuple[pd.DataFrame, pd.DataFrame]:
     # returns (calls_df, puts_df) for a given ticker and expiry date
