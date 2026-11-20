@@ -1,10 +1,7 @@
-from scipy.stats import norm
-import sys 
-import os
-import math
 import json
+import math
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from scipy.stats import norm
 
 from models.black_scholes import compute_d1_d2
 
@@ -48,7 +45,7 @@ def rho(s, k, r, t, sigma):
 
 
 def compute_all(s, k , r, t, sigma) -> dict:
-    if t == 0:
+    if t <= 0:
         return {
             "call": {"delta": 1.0 if s > k else 0.0, "gamma": 0.0, "vega": 0.0, "theta": 0.0, "rho": 0.0},
             "put": {"delta": -1.0 if s < k else 0.0, "gamma": 0.0, "vega": 0.0, "theta": 0.0, "rho": 0.0}
